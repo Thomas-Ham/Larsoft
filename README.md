@@ -1,2 +1,3 @@
 # larsoft_energy_tech_note
-# Larsoft
+### The plotting scripts and list of files etc I used for the EM shower reconstruction
+### The code for sbncode, larpandora etc are in their own repositories
