@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+  <!-- Production Project -->
+  <!DOCTYPE project [
+  <!ENTITY release "v09_25_00">
+  <!ENTITY file_type "mc">
+  <!ENTITY run_type "physics">
+  <!ENTITY name "energy_reco_tech_note">
+  <!ENTITY tag "electron_vertex_bnblike_XZ_plane_cheating_fit2">
+]>
+
+<project name="&name;">
+    
+  <!-- Project size -->
+  <numevents>2000</numevents>
+  
+  <role>Analysis</role>  
+  <group>sbnd</group>
+
+  <!-- Batch resources -->
+  <resource>DEDICATED,OPPORTUNISTIC</resource>
+  <blacklist>SU-ITS,UChicago</blacklist>
+  
+  <!-- Larsoft information -->
+  <larsoft>
+    <tag>&release;</tag>
+    <qual>e20:prof</qual>
+    <local>/pnfs/sbnd/resilient/users/tham/TRACS/fit2.tar</local>
+  </larsoft>
+  
+  <!-- Project stages -->  
+    <stage name="gen_g4">
+    <fcl>/sbnd/app/users/tham/larsoft_energy_tech_note/srcs/sbndcode/sbndcode/JobConfigurations/standard/gen/single/prodsingle_electron_pi+_bnblike_XZ_plane.fcl</fcl>
+    <fcl>/sbnd/app/users/tham/larsoft_energy_tech_note/srcs/sbndcode/sbndcode/JobConfigurations/standard/standard_g4_sbnd.fcl</fcl>
+    <outdir>/pnfs/sbnd/persistent/users/tham/showers/&name;/&tag;/gen_g4</outdir>
+    <workdir>/pnfs/sbnd/persistent/users/tham/showers/&name;/work/&tag;/gen_g4</workdir>
+    <numjobs>10</numjobs>
+    <datatier>generated</datatier>
+    <defname>&name;_&tag;_gen_g4</defname>
+    <memory>1500</memory>
+    <disk>5 GB</disk>
+    <schema>root</schema>
+    <jobsub>--expected-lifetime=6h -l '+SingularityImage="/cvmfs/singularity.opensciencegrid.org/fermilab/fnal-wn-sl7:latest"' --append_condor_requirements='(TARGET.HAS_SINGULARITY=?=true)'</jobsub>
+    <maxfluxfilemb>0</maxfluxfilemb> 
+  </stage>
+
+
+  <stage name="detsim">
+    <fcl>/sbnd/app/users/tham/larsoft_energy_tech_note/srcs/sbndcode/sbndcode/JobConfigurations/standard/standard_detsim_sbnd.fcl</fcl>
+    <outdir>/pnfs/sbnd/persistent/users/tham/showers/&name;/&tag;/detsim</outdir>
+    <workdir>/pnfs/sbnd/persistent/users/tham/showers/&name;/work/&tag;/detsim</workdir>
+    <inputlist>/sbnd/app/users/tham/larsoft_energy_tech_note/events/electron_vertex_bnblike_XZ_plane_cheating_2_gen_g4.list</inputlist>
+    <numjobs>10</numjobs>
+    <datatier>detsim</datatier>
+    <defname>&name;_&tag;_detsim</defname>
+    <memory>2000</memory>
+    <disk>5 GB</disk>
+    <schema>root</schema>
+    <jobsub>--expected-lifetime=6h -l '+SingularityImage="/cvmfs/singularity.opensciencegrid.org/fermilab/fnal-wn-sl7:latest"' --append_condor_requirements='(TARGET.HAS_SINGULARITY=?=true)'</jobsub>
+    <maxfluxfilemb>0</maxfluxfilemb> 
+  </stage>
+
+
+
+  <stage name="reco">
+    <fcl>reco_fit.fcl</fcl>
+    <outdir>/pnfs/sbnd/persistent/users/tham/showers/&name;/&tag;/reco</outdir>
+    <workdir>/pnfs/sbnd/persistent/users/tham/showers/&name;/work/&tag;/reco</workdir>
+    <inputlist>/sbnd/app/users/tham/larsoft_energy_tech_note/events/electron_vertex_bnblike_XZ_plane_cheating_2_detsim.list</inputlist>
+    <numjobs>10</numjobs>
+    <datatier>reco</datatier>
+    <defname>&name;_&tag;_reco</defname>
+    <memory>6000</memory>
+    <disk>5 GB</disk>
+    <schema>root</schema>-->
+    <jobsub>--expected-lifetime=12h -l '+SingularityImage="/cvmfs/singularity.opensciencegrid.org/fermilab/fnal-wn-sl7:latest"' --append_condor_requirements='(TARGET.HAS_SINGULARITY=?=true)'</jobsub>
+    <maxfluxfilemb>0</maxfluxfilemb> 
+  </stage>
+  
+  <filetype>&file_type;</filetype>
+  
+  <!-- run type -->
+  <runtype>&run_type;</runtype>
+  
+</project>
+
